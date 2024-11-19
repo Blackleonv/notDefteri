@@ -21,7 +21,7 @@ import com.yusufpolat.ikinciuygulamam.databinding.ActivitySeconScreenBinding;
 
 public class seconScreen extends AppCompatActivity {
     private ActivitySeconScreenBinding binding;
-    private SQLiteDatabase database; // Yeni: Veritabanı değişkeni sınıf düzeyinde tanımlandı
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +48,18 @@ public class seconScreen extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    // Yeni: Veriyi veritabanına ekleyen metot
     private void addData(String veri) {
-        try {
-            database.execSQL("INSERT INTO VeriTabanı (veri) VALUES ('" + veri + "')");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    try {
+        database.execSQL("INSERT INTO VeriTabanı (veri) VALUES ('" + veri + "')");
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu2) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.seconscreenmenu, menu2);
-        return true; // super.onCreateOptionsMenu(menu) yerine true döndürmek gerekiyor
+        return true;
     }
 
     @Override
@@ -70,24 +67,26 @@ public class seconScreen extends AppCompatActivity {
         String veri = binding.textView.getText().toString();
         if (item.getItemId() == R.id.save) {
             if (!veri.isEmpty()) {
-                addData(veri); // Yeni: Veriyi ekle
-                Toast.makeText(this, "Veri kaydedildi!", Toast.LENGTH_LONG).show();
+                addData(veri); // Veriyi ekle
+                Toast.makeText(this, "Veri kaydedildi!", Toast.LENGTH_SHORT).show();
                 binding.textView.setText(""); // EditText'i temizle
-                Intent intent = new Intent(this,MainActivity.class);
 
+                // Ana sayfaya geri dön
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Ana sayfayı temizle
                 startActivity(intent);
+                finish(); // Bu aktiviteyi kapat
             } else {
-                Toast.makeText(this, "Lütfen bir metin girin!", Toast.LENGTH_SHORT).show(); // Yeni: Boş metin kontrolü
+                Toast.makeText(this, "Lütfen bir metin girin!", Toast.LENGTH_SHORT).show();
             }
         } else if (item.getItemId() == R.id.exit) {
             Toast.makeText(this, "Uygulama Kapatılıyor", Toast.LENGTH_LONG).show();
             finish(); // Uygulamayı kapatmak için
         }
-        return super.onOptionsItemSelected(item); // Burada super çağrısını ekleyin
+        return super.onOptionsItemSelected(item);
     }
 
-
-    // Yeni: Veritabanındaki verileri okuyan metot
+    // Veritabanındaki verileri okuyan metot
     private String readData() {
         StringBuilder stringBuilder = new StringBuilder();
         Cursor cursor = database.rawQuery("SELECT * FROM VeriTabanı", null);

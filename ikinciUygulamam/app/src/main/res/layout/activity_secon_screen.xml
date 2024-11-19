@@ -21,10 +21,12 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Notunuzu Yazmaya Başlayın..."
         android:background="#9F525461"
-        android:textSize="25sp"
-        android:padding="10dp" />
+        android:hint="Notunuzu Yazmaya Başlayın..."
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:textAlignment="viewStart"
+        android:textSize="25sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recylerView"
